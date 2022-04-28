@@ -1,7 +1,7 @@
 # Import OR-Tools wrapper for linear programming
 from ortools.linear_solver import pywraplp
 
-solver = pywraplp.Solver('Maximize army power', pywraplp.Solver.SCIP_MIXED_INTEGER_PROGRAMMING)
+solver = pywraplp.Solver('Maximize Lucro', pywraplp.Solver.SCIP_MIXED_INTEGER_PROGRAMMING)
 
 # Create the variables we want to optimize
 x1 = solver.NumVar(0, solver.infinity(), 'Tinta para exteriores')
