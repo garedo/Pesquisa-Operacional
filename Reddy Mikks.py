@@ -1,0 +1,29 @@
+# Import OR-Tools wrapper for linear programming
+from ortools.linear_solver import pywraplp
+
+solver = pywraplp.Solver('Maximize army power', pywraplp.Solver.SCIP_MIXED_INTEGER_PROGRAMMING)
+
+# Create the variables we want to optimize
+x1 = solver.NumVar(0, solver.infinity(), 'Tinta para exteriores')
+x2 = solver.NumVar(0, solver.infinity(), 'Tinta para interiores')
+
+# Add constraints for each resource
+solver.Add(6 * x1 + 4 * x2 <= 24) #Matéria-prima M1
+solver.Add(1 * x1 + 2 * x2 <= 6) #Matéria-prima M2
+solver.Add(x2 - x1 <= 1) # Tinta para interiores não pode ultrapassar tinta para exteriores em 1t
+solver.Add(x2 <= 2) #demanda max tinta para interiores
+
+solver.Maximize(5 * x1 + 4 * x2)
+
+status = solver.Solve()
+
+# If an optimal solution has been found, print results
+if status == pywraplp.Solver.OPTIMAL:
+  print('================= Solution =================')
+  print(f'Solved in {solver.wall_time():.2f} milliseconds in {solver.iterations()} iterations\n')
+  print(f'lucro_Max = {solver.Objective().Value()}')
+  print(f' - Tinta para exteriores = {x1.solution_value()}')
+  print(f' - Tinta para interiores = {x2.solution_value()}')
+
+else:
+  print('The solver could not find an optimal solution.')
